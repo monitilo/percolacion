@@ -24,7 +24,8 @@ int main()
 
 	llenar(red,n,m,p);
 	print_red(red,n,m);
-   
+   	free(red);
+	
    return(0);
 }
 
