@@ -3,6 +3,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+
+#define N     10         // cantidad de filas
+#define M     20            //cantidad de columnas
+#define P     0.5	//porbabilidad de poblar un lugar (entre 0 y 1)
+
 void llenar (int* red,int n, int m, float p); //para poblar la red de n*m con proba p en cada punto
 void print_red (int* red,int n, int m);				//para printear la red en forma de matriz en la consola
 
@@ -17,9 +22,9 @@ int main()
 	int n;     //cantidad de filas
 	int m;			// cantidad de columnas
 	float p;			//porbabilidad de poblar un lugar (entre 0 y 1)
-	p= 0.5	;
-	n=10 ;
-	m=10 ;
+	p= P	;
+	n=N ;
+	m=M ;
 	red=malloc(n*m* sizeof(int));
 
 	llenar(red,n,m,p);
