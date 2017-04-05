@@ -108,6 +108,11 @@ void  etiqueta_falsa(int *red,int *clase,int s1,int s2){ //corrique coincidencia
 		clase[s1]=s1;
 		*red=s1;
 	}
+	else{
+		clase[s1]=-s2;
+		clase[s2]=s2;
+		*red=s2;
+	}
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
