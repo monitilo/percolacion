@@ -90,7 +90,7 @@ int actualizar(int *red,int *clase,int s,int frag){	 //cambia la red por numeros
 		*red=frag;
 	}
 	else{
-		*red=frag;
+		*red=s;
 	}
 	return frag;
 }
@@ -101,7 +101,7 @@ void  etiqueta_falsa(int *red,int *clase,int s1,int s2){ //corrique coincidencia
 
 	while(clase[s1]<0) s1=-clase[s1];
 
-	while (clase[s1]<0)	s2=-clase[s2];
+	while (clase[s2]<0)	s2=-clase[s2];
 
 	if(s1<s2){
 		clase[s2]=-s1;
