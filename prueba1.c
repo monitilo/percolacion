@@ -4,9 +4,9 @@
 #include <time.h>
 
 
-#define N     6        // cantidad de filas PERO ES CUADRADA DESPUES!!!		
-#define M     6         //cantidad de columnas
-#define P     0.9	//porbabilidad de poblar un lugar (entre 0 y 1)
+#define N     8        // cantidad de filas PERO ES CUADRADA DESPUES!!!		
+#define M     8         //cantidad de columnas
+#define P     0.5	//porbabilidad de poblar un lugar (entre 0 y 1)
 
 void llenar (int* red,int n, int m, float p); //para poblar la red de n*m con proba p en cada punto
 void print_red (int* red,int n, int m);	      //para printear la red en forma de matriz en la consola
@@ -74,9 +74,9 @@ void print_red(int* red, int n, int m)
 
 		for(j=0;j<m;j=j+1){ 
 
-			printf("%d ", red[i*m+j]);
+			printf("%d ", red[i*m+j]); //dibujo la fila
 		}
-		printf("\n");
+		printf("\n");                //bajo a la siguiente fila
 	}
 }
 
@@ -85,9 +85,9 @@ void print_red(int* red, int n, int m)
 int actualizar(int *red,int *clase,int s,int frag){	 //cambia la red por numeros de etiqueta
 
 	if (s==0){
-		frag++;
 		clase[frag]=frag;
 		*red=frag;
+		frag++;
 	}
 	else{
 		*red=s;
@@ -195,7 +195,7 @@ int hoshen(int *red,int n)
     }
 
 
-  //corregir_etiqueta(red,clase,n);
+  corregir_etiqueta(red,clase,n);
 
   free(clase);
 

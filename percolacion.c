@@ -59,7 +59,91 @@ int main(int argc,char *argv[])
 }
 
 
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+void llenar (int*red,int n, int m, float p){
+	int i;
+	int r;
 
+	for (i=0;i<n*m;i++){
+
+	    r=rand() % 100;	
+
+		if (r>p*100){ //esto hace un if
+
+			red[i]=0;
+		}
+		else {
+			red[i]=1;
+		}
+	}
+
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
+void print_red(int* red, int n, int m)
+{
+	int i;
+	int j;
+	for(i=0 ;i<n;i=i+1){
+
+		for(j=0;j<m;j=j+1){ 
+
+			printf("%d ", red[i*m+j]); //dibujo la fila
+		}
+		printf("\n");                //bajo a la siguiente fila
+	}
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
+int actualizar(int *red,int *clase,int s,int frag){	 //cambia la red por numeros de etiqueta
+
+	if (s==0){
+		clase[frag]=frag;
+		*red=frag;
+		frag++;
+	}
+	else{
+		*red=s;
+	}
+	return frag;
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
+void  etiqueta_falsa(int *red,int *clase,int s1,int s2){ //corrique coincidencias de etiquetas
+
+	while(clase[s1]<0) s1=-clase[s1];
+
+	while (clase[s2]<0)	s2=-clase[s2];
+
+	if(s1<s2){
+		clase[s2]=-s1;
+		clase[s1]=s1;
+		*red=s1;
+	}
+	else{
+		clase[s1]=-s2;
+		clase[s2]=s2;
+		*red=s2;
+	}
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
+void  corregir_etiqueta(int *red,int *clase,int n){	 //reetiqueta la red con los numeros bien
+	int i ;
+	int s ;
+
+	for(i=0;i<n*n;i++){
+
+			s=red[i];
+			while(clase[s]<0) s=-clase[s];
+			red[i] =s ;
+	}
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------//
 int hoshen(int *red,int n)
 {
   /*
@@ -128,9 +212,8 @@ int hoshen(int *red,int n)
 
   corregir_etiqueta(red,clase,n);
 
-  free(clase):
+  free(clase);
 
   return 0;
 }
-
 
