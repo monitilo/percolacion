@@ -4,12 +4,11 @@
 #include <time.h>
 
 
-#define N     8        // cantidad de filas PERO ES CUADRADA DESPUES!!!		
-#define M     8         //cantidad de columnas
+#define N     8        // ES CUADRADA de NxN		
 #define P     0.5	//porbabilidad de poblar un lugar (entre 0 y 1)
 
-void llenar (int* red,int n, int m, float p); //para poblar la red de n*m con proba p en cada punto
-void print_red (int* red,int n, int m);	      //para printear la red en forma de matriz en la consola
+void llenar (int* red,int n, float p); //para poblar la red de n*m con proba p en cada punto
+void print_red (int* red,int n);	      //para printear la red en forma de matriz en la consola
 int  actualizar(int *red,int *clase,int s,int frag);	 //cambia la red por numeros de etiqueta
 void etiqueta_falsa(int *red,int *clase,int s1,int s2); //corrije coincidencias de etiquetas
 void corregir_etiqueta(int *red,int *clase,int n);	 //reetiqueta la red con los numeros bien
@@ -25,19 +24,18 @@ int main()
    srand((unsigned) time(&t));
 
 	int* red; //Marcador de memoria para crear la matiz de la red
-	int n;     //cantidad de filas
-	int m;			// cantidad de columnas
-	float p;			//porbabilidad de poblar un lugar (entre 0 y 1)
+	int n;     
+	float p ;	//porbabilidad de poblar un lugar (entre 0 y 1)
 	p= P	;
 	n=N ;
-	m=M ;
-	red=malloc(n*m* sizeof(int));
 
-	llenar(red,n,m,p);
-	print_red(red,n,m);  //printea la red de 1 y 0
+	red=malloc(n*n* sizeof(int));
+
+	llenar(red,n,p);
+	print_red(red,n);  //printea la red de 1 y 0
 	hoshen(red,n);
 	printf("\n");        // agrega un espacio entre redes
-	print_red(red,n,m);	 // printea la red con numeros
+	print_red(red,n);	 // printea la red con numeros
 
 
    	free(red);
@@ -45,15 +43,15 @@ int main()
    return(0);
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------//
-void llenar (int*red,int n, int m, float p){
+void llenar (int*red,int n, float p){
 	int i;
 	int r;
 
-	for (i=0;i<n*m;i++){
+	for (i=0;i<n*n;i++){
 
 	    r=rand() % 100;	
 
-		if (r>p*100){ //esto hace un if
+		if (r>p*100){ 
 
 			red[i]=0;
 		}
@@ -66,15 +64,15 @@ void llenar (int*red,int n, int m, float p){
 
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
-void print_red(int* red, int n, int m)
+void print_red(int* red, int n)
 {
 	int i;
 	int j;
 	for(i=0 ;i<n;i=i+1){
 
-		for(j=0;j<m;j=j+1){ 
+		for(j=0;j<n;j=j+1){ 
 
-			printf("%d ", red[i*m+j]); //dibujo la fila
+			printf("%d ", red[i*n+j]); //dibujo la fila
 		}
 		printf("\n");                //bajo a la siguiente fila
 	}
