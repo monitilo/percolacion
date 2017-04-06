@@ -1,23 +1,27 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <time.h>
 
-#define P     16             // 1/2^P, P=16
-#define Z     27000          // iteraciones
-#define N     30             // lado de la red simulada
+#define P     16           // 1/2^P, P=16
+#define Z     27000       // iteraciones
+#define N     30            // lado de la red simulada
 
 
-void  llenar(int *red,int n,float prob);
-int   hoshen(int *red,int n);
-int   actualizar(int *red,int *clase,int s,int frag);
-void  etiqueta_falsa(int *red,int *clase,int s1,int s2);
-void  corregir_etiqueta(int *red,int *clase,int n);
+void llenar (int* red,int n, float p); 										//para poblar la red de n*m con proba p en cada punto
+void print_red (int* red,int n);	      									//para printear la red en forma de matriz en la consola
+int   hoshen(int *red,int n);  														//asigna etiquetas
+int   actualizar(int *red,int *clase,int s,int frag);  		//cambia la red por numeros de etiqueta
+void  etiqueta_falsa(int *red,int *clase,int s1,int s2);	//corrije coincidencias de etiquetas
+void  corregir_etiqueta(int *red,int *clase,int n); 			//reetiqueta la red con los numeros bien
 int   percola(int *red,int n);
 
 int main(int argc,char *argv[])
 {
   int    i,j,*red;
   float  prob,denominador;
+	int n;
+	int z;
 
   n=N;
   z=Z;
@@ -29,8 +33,6 @@ int main(int argc,char *argv[])
      }
     
   red=(int *)malloc(n*n*sizeof(int));
-
-
 
   for(i=0;i<z;i++)
     {
@@ -46,12 +48,17 @@ int main(int argc,char *argv[])
           hoshen(red,n);
         
           denominador=2.0*denominador;
-
           if (percola(red,n)) 
              prob+=(-1.0/denominador); 
           else prob+=(1.0/denominador);
         }
     }
+
+/*	print_red(red,n);
+	printf("\n"); 
+	printf("%d\n", percola(red,n)); 
+*/
+	printf("%f\n", prob); 
 
   free(red);
 
@@ -60,15 +67,15 @@ int main(int argc,char *argv[])
 
 
 //--------------------------------------------------------------------------------------------------------------------------------------------//
-void llenar (int*red,int n, int m, float p){
+void llenar (int*red,int n, float p){
 	int i;
 	int r;
 
-	for (i=0;i<n*m;i++){
+	for (i=0;i<n*n;i++){
 
 	    r=rand() % 100;	
 
-		if (r>p*100){ //esto hace un if
+		if (r>p*100){ 
 
 			red[i]=0;
 		}
@@ -81,15 +88,15 @@ void llenar (int*red,int n, int m, float p){
 
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
-void print_red(int* red, int n, int m)
+void print_red(int* red, int n)
 {
 	int i;
 	int j;
 	for(i=0 ;i<n;i=i+1){
 
-		for(j=0;j<m;j=j+1){ 
+		for(j=0;j<n;j=j+1){ 
 
-			printf("%d ", red[i*m+j]); //dibujo la fila
+			printf("%d ", red[i*n+j]); //dibujo la fila
 		}
 		printf("\n");                //bajo a la siguiente fila
 	}
@@ -143,6 +150,24 @@ void  corregir_etiqueta(int *red,int *clase,int n){	 //reetiqueta la red con los
 	}
 }
 
+//--------------------------------------------------------------------------------------------------------------------------------------------//
+
+int percola(int *red,int n){
+	int i;
+	int j;
+	for(i=0;i<n;i++){
+		if (red[i]!=0){
+			for(j=0;j<n;j++){
+				if (red[i]==red[j+n*(n-1)]){
+					return 1;
+				}	
+			}
+		}
+	}	
+	return 0;
+	//if (a!=0) return 1;
+	//else return 0;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 int hoshen(int *red,int n)
 {
