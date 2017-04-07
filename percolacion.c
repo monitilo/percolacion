@@ -4,7 +4,7 @@
 #include <time.h>
 
 #define P     16           // 1/2^P, P=16
-#define Z     27000       // iteraciones
+#define Z     27000      			// iteraciones
 #define N     30            // lado de la red simulada
 
 
@@ -14,14 +14,13 @@ int   hoshen(int *red,int n);  														//asigna etiquetas
 int   actualizar(int *red,int *clase,int s,int frag);  		//cambia la red por numeros de etiqueta
 void  etiqueta_falsa(int *red,int *clase,int s1,int s2);	//corrije coincidencias de etiquetas
 void  corregir_etiqueta(int *red,int *clase,int n); 			//reetiqueta la red con los numeros bien
-int   percola(int *red,int n);
+int   percola(int *red,int n,int frag);
 
 int main(int argc,char *argv[])
 {
-  int    i,j,*red;
+  int    n,z,i,j,*red;
   float  prob,denominador;
-	int n;
-	int z;
+	int frag;
 
   n=N;
   z=Z;
@@ -45,19 +44,19 @@ int main(int argc,char *argv[])
         {
           llenar(red,n,prob);
       
-          hoshen(red,n);
+          frag = hoshen(red,n);
         
           denominador=2.0*denominador;
-          if (percola(red,n)) 
+          if (percola(red,n,frag)!=0) 
              prob+=(-1.0/denominador); 
           else prob+=(1.0/denominador);
         }
     }
 
-/*	print_red(red,n);
+	print_red(red,n);
 	printf("\n"); 
-	printf("%d\n", percola(red,n)); 
-*/
+	printf("%d\n", percola(red,n,frag)); 
+
 	printf("%f\n", prob); 
 
   free(red);
@@ -152,21 +151,34 @@ void  corregir_etiqueta(int *red,int *clase,int n){	 //reetiqueta la red con los
 
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
-int percola(int *red,int n){
+int percola(int *red,int n, int frag){ //saco los if que tardan mucho
+
+	int* fila1;
+	int* filan;
+	fila1=malloc(frag*sizeof(int));
+	filan=malloc(frag*sizeof(int));
 	int i;
-	int j;
-	for(i=0;i<n;i++){
-		if (red[i]!=0){
-			for(j=0;j<n;j++){
-				if (red[i]==red[j+n*(n-1)]){
-					return 1;
-				}	
-			}
-		}
+	int a;
+
+	for(i=0;i<frag;i++){
+		fila1[i]=0;
+		filan[i]=0;
 	}	
-	return 0;
-	//if (a!=0) return 1;
-	//else return 0;
+	for(i=0;i<n;i++){
+		fila1[red[i]]=1;
+		filan[red[i+n*(n-1)]]=1;
+	}	
+
+	fila1[0]=0;
+	filan[0]=0;
+	a=0;
+
+	for(i=0;i<frag;i++){
+		a=fila1[i]*filan[i]+a;
+	}
+
+return a;
+
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 int hoshen(int *red,int n)
@@ -239,6 +251,6 @@ int hoshen(int *red,int n)
 
   free(clase);
 
-  return 0;
+  return frag;
 }
 
