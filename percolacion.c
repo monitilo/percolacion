@@ -5,10 +5,10 @@
 
 #define P     16           // 1/2^P, P=16
 #define Z     27000      			// iteraciones
-#define N     30            // lado de la red simulada
+#define N     16            // lado de la red simulada
 
 
-void llenar (int* red,int n, float p); 										//para poblar la red de n*m con proba p en cada punto
+void llenar (int* red,int n, float p); 										//para poblar la red cuadrada con proba p en cada punto
 void print_red (int* red,int n);	      									//para printear la red en forma de matriz en la consola
 int   hoshen(int *red,int n);  														//asigna etiquetas
 int   actualizar(int *red,int *clase,int s,int frag);  		//cambia la red por numeros de etiqueta
@@ -21,10 +21,11 @@ int main(int argc,char *argv[])
   int    n,z,i,j,*red;
   float  prob,denominador;
 	int frag;
-
+	float pmean=0;
+	float *pc;
   n=N;
   z=Z;
-
+	pc=malloc(sizeof(float)*z);
   if (argc==3) 
      {
        sscanf(argv[1],"%d",&n);
@@ -51,14 +52,19 @@ int main(int argc,char *argv[])
              prob+=(-1.0/denominador); 
           else prob+=(1.0/denominador);
         }
+			pc[i]=prob;
+			pmean=pmean+prob;
     }
 
-	print_red(red,n);
+/*	print_red(red,n);
 	printf("\n"); 
-	printf("%d\n", percola(red,n,frag)); 
+	printf("%d\n", percola(red,n,frag)); */
 
-	printf("%f\n", prob); 
+//	printf("%f\n", prob); 
 
+	printf("\n"); 
+	printf("%f\n", pmean/Z);
+	printf("\n"); 
   free(red);
 
   return 0;
@@ -176,7 +182,8 @@ int percola(int *red,int n, int frag){ //saco los if que tardan mucho
 	for(i=0;i<frag;i++){
 		a=fila1[i]*filan[i]+a;
 	}
-
+	free(fila1);
+	free(filan);
 return a;
 
 }
