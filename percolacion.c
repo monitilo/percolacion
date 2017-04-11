@@ -15,6 +15,7 @@ int   actualizar(int *red,int *clase,int s,int frag);  		//cambia la red por num
 void  etiqueta_falsa(int *red,int *clase,int s1,int s2);	//corrije coincidencias de etiquetas
 void  corregir_etiqueta(int *red,int *clase,int n); 			//reetiqueta la red con los numeros bien
 int   percola(int *red,int n,int frag);
+void escribir(float* z, int n);
 
 int main(int argc,char *argv[])
 {
@@ -34,13 +35,13 @@ int main(int argc,char *argv[])
     
   red=(int *)malloc(n*n*sizeof(int));
 
+      srand(time(NULL));
+
   for(i=0;i<z;i++)
     {
       prob=0.5;
       denominador=2.0;
  
-      srand(time(NULL));
-
       for(j=0;j<P;j++)
         {
           llenar(red,n,prob);
@@ -52,19 +53,25 @@ int main(int argc,char *argv[])
              prob+=(-1.0/denominador); 
           else prob+=(1.0/denominador);
         }
-			pc[i]=prob;
-			pmean=pmean+prob;
+		pc[i]=prob;
+		pmean=prob+pmean;
+
+		//printf("%f\n", prob); 
     }
+	escribir(pc, z);
 
 /*	print_red(red,n);
 	printf("\n"); 
-	printf("%d\n", percola(red,n,frag)); */
+	printf("%d\n", percola(red,n,frag)); 
 
-//	printf("%f\n", prob); 
+	printf("%f\n", prob); */
 
 	printf("\n"); 
 	printf("%f\n", pmean/Z);
-	printf("\n"); 
+	printf("\n");
+
+
+
   free(red);
 
   return 0;
@@ -90,7 +97,17 @@ void llenar (int*red,int n, float p){
 	}
 
 }
+//--------------------------------------------------------------------------------------------------------
+void escribir(float* z, int n){
+	int i;
+	FILE*fp;
+	fp=fopen("datos.txt","w");
+	for(i=0;i<n;i++){
+		fprintf(fp,"%f\n",*(z+i));
+	}
+fclose(fp);
 
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
 void print_red(int* red, int n)
