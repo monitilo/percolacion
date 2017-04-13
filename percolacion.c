@@ -14,9 +14,9 @@ int   hoshen(int *red,int n);  														//asigna etiquetas
 int   actualizar(int *red,int *clase,int s,int frag);  		//cambia la red por numeros de etiqueta
 void  etiqueta_falsa(int *red,int *clase,int s1,int s2);	//corrije coincidencias de etiquetas
 void  corregir_etiqueta(int *red,int *clase,int n); 			//reetiqueta la red con los numeros bien
-int   percola(int *red,int n,int frag);
-void escribir(float* z, int n);
-
+int  percola(int *red,int n,int frag);
+void escribir(char* s, float p, int M , int z,int n);
+//void escribirns(int* ns, int n);
 int main(int argc,char *argv[])
 {
   int    n,z,i,j,*red;
@@ -24,8 +24,11 @@ int main(int argc,char *argv[])
 	int frag;
 	float pmean=0;
 	float *pc;
+	char* s;
+	s="bazinga";
   n=N;
   z=Z;
+	int m=2;
 	pc=malloc(sizeof(float)*z);
   if (argc==3) 
      {
@@ -55,10 +58,11 @@ int main(int argc,char *argv[])
         }
 		pc[i]=prob;
 		pmean=prob+pmean;
-
+		escribir(s,prob,m,z,n);
 		//printf("%f\n", prob); 
     }
-	escribir(pc, z);
+
+
 
 /*	print_red(red,n);
 	printf("\n"); 
@@ -98,16 +102,35 @@ void llenar (int*red,int n, float p){
 
 }
 //--------------------------------------------------------------------------------------------------------
-void escribir(float* z, int n){
-	int i;
+void escribir(char* s, float p, int m , int z, int n){
+
 	FILE*fp;
-	fp=fopen("datos.txt","w");
-	for(i=0;i<n;i++){
-		fprintf(fp,"%f\n",*(z+i));
-	}
+	fp=fopen(s,"a");
+		fprintf(fp,"%d",n);
+		fprintf(fp,"%s",";");
+		fprintf(fp,"%f",p);
+		fprintf(fp,"%s",";");
+		fprintf(fp,"%d\n",m);
+
+	
 fclose(fp);
 
 }
+
+//--------------------------------------------------------------------------------------------------------
+/*void escribirns(int* ns, int n){
+	int i;
+	FILE*fp;
+	fp=fopen("ns(n).txt","w");
+	
+	fprintf(fp,"%c","largo de red");
+	fprintf(fp,"%f\n",n);
+	for(i=0;i<n*n;i++){
+		fprintf(fp,"%f\n",*(ns+i));
+	}
+fclose(fp);
+
+}*/
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
 void print_red(int* red, int n)
