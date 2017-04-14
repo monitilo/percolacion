@@ -16,7 +16,7 @@ void  etiqueta_falsa(int *red,int *clase,int s1,int s2);	//corrije coincidencias
 void  corregir_etiqueta(int *red,int *clase,int n); 			//reetiqueta la red con los numeros bien
 int  percola(int *red,int n,int frag);
 void escribir(char* s, float p, int M ,int n);
-void escribirns(char* sns,int* ns, int n);
+void escribirns(char* sns,int* ns, int n,float pmean);
 void clusterSize(int *red, int n, int frag, int *fragsz, int *ns);
 
 
@@ -29,8 +29,8 @@ int main(int argc,char *argv[])
 	int frag; 		//guardo la etiqueta mas grande que pone hoshen
 	float pmean=0;
 	//float *pc;
-	char* lpm="L;P;M";
-	char* sns="ns(n)";
+	char* lpm="L;P;M 3";
+	char* sns="ns(n) 3";
 	int m;
 	int *fragsz;	//variable donde voy a guardar el tamaño de cada fragmento
 	int* ns;		//variable donde guardo la distribucion de fragmentos, salvo en ns[0] que encuentro el tamaño del fragmento mas grande
@@ -75,6 +75,9 @@ int main(int argc,char *argv[])
 					
           else prob+=(1.0/denominador);
         }//fin del for de P----------------------------------
+			llenar(red,n,prob);
+      
+      frag = hoshen(red,n);
 
 			fragsz = malloc(frag*sizeof(int)); // fragsz[i] devuelve el tamaño del i-esimo fragmento, etiquetados por hoshen
 			for(j=0;j<frag;j++) fragsz[j] = 0; //inicializo en 0
@@ -95,7 +98,7 @@ int main(int argc,char *argv[])
 
     }		//fin del for de z---------------------------
 	
-	escribirns(sns,ns, n);
+	escribirns(sns,ns, n, pmean/z);
 
 
 /*	print_red(red,n);
@@ -151,13 +154,14 @@ fclose(fp);
 }
 
 //--------------------------------------------------------------------------------------------------------
-void escribirns(char* sns,int* ns, int n){
+void escribirns(char* sns,int* ns, int n,float pmean){
 	int i;
 	FILE*fp;
 	fp=fopen(sns,"a");
 	
-	fprintf(fp,"%s","promedio todos los <p> ; ");
-	fprintf(fp,"%s","largo de red ");
+	fprintf(fp,"%s","promedio todos los <p> = ");
+	fprintf(fp,"%f",pmean);
+	fprintf(fp,"%s","; largo de red =");
 	fprintf(fp,"%d\n",n);
 	for(i=0;i<n*n;i++){
 		fprintf(fp,"%d\n",*(ns+i));
