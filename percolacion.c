@@ -3,9 +3,9 @@
 #include <math.h>
 #include <time.h>
 
-#define P     16           // 1/2^P, P=16
-#define Z     27000      			// iteraciones
-#define N     16            // lado de la red simulada
+#define P			16					// 1/2^P, P=16
+#define Z			27000			// iteraciones
+#define N			4					// lado de la red simulada
 
 
 void llenar (int* red,int n, float p); 										//para poblar la red cuadrada con proba p en cada punto
@@ -15,67 +15,101 @@ int   actualizar(int *red,int *clase,int s,int frag);  		//cambia la red por num
 void  etiqueta_falsa(int *red,int *clase,int s1,int s2);	//corrije coincidencias de etiquetas
 void  corregir_etiqueta(int *red,int *clase,int n); 			//reetiqueta la red con los numeros bien
 int  percola(int *red,int n,int frag);
-void escribir(char* s, float p, int M , int z,int n);
-//void escribirns(int* ns, int n);
+void escribir(char* s, float p, int M ,int n);
+void escribirns(char* sns,int* ns, int n);
+void clusterSize(int *red, int n, int frag, int *fragsz, int *ns);
+
+
+
+
 int main(int argc,char *argv[])
 {
   int    n,z,i,j,*red;
   float  prob,denominador;
-	int frag;
+	int frag; 		//guardo la etiqueta mas grande que pone hoshen
 	float pmean=0;
-	float *pc;
-	char* s;
-	s="bazinga";
+	//float *pc;
+	char* lpm="L;P;M";
+	char* sns="ns(n)";
+	int m;
+	int *fragsz;	//variable donde voy a guardar el tamaño de cada fragmento
+	int* ns;		//variable donde guardo la distribucion de fragmentos, salvo en ns[0] que encuentro el tamaño del fragmento mas grande
+
+
   n=N;
   z=Z;
-	int m=2;
-	pc=malloc(sizeof(float)*z);
-  if (argc==3) 
+
+	//pc=malloc(sizeof(float)*z);
+
+
+	ns = malloc(n*n*sizeof(int));  //ns[i] devuelve la cantidad de fragmentos de tamaño i
+	
+	for(i=0;i<n*n;i++) ns[i] = 0; 	   //inicializo en 0
+
+
+	if (argc==3) 
      {
        sscanf(argv[1],"%d",&n);
        sscanf(argv[2],"%d",&z);
      }
+
     
-  red=(int *)malloc(n*n*sizeof(int));
+	red=(int *)malloc(n*n*sizeof(int));
 
-      srand(time(NULL));
+	srand(time(NULL));
 
-  for(i=0;i<z;i++)
-    {
-      prob=0.5;
-      denominador=2.0;
+	for(i=0;i<z;i++)
+		{
+			prob=0.5;
+			denominador=2.0;
  
-      for(j=0;j<P;j++)
-        {
+		for(j=0;j<P;j++)
+				{
           llenar(red,n,prob);
       
           frag = hoshen(red,n);
         
           denominador=2.0*denominador;
-          if (percola(red,n,frag)!=0) 
-             prob+=(-1.0/denominador); 
+          if (percola(red,n,frag)!=0)
+             prob+=(-1.0/denominador);
+					
           else prob+=(1.0/denominador);
-        }
-		pc[i]=prob;
-		pmean=prob+pmean;
-		escribir(s,prob,m,z,n);
-		//printf("%f\n", prob); 
-    }
+        }//fin del for de P----------------------------------
 
+			fragsz = malloc(frag*sizeof(int)); // fragsz[i] devuelve el tamaño del i-esimo fragmento, etiquetados por hoshen
+			for(j=0;j<frag;j++) fragsz[j] = 0; //inicializo en 0
+					
+			
+			clusterSize(red,n,frag,fragsz,ns); 
+
+			m = fragsz[percola(red,n,frag)]; //guardo el tamaño del cluster percolante, lo que sería el M o Minf
+
+			//pc[i]=prob;
+			pmean=prob+pmean;
+			escribir(lpm,prob,m,n); // imprime L;P;M en este orden
+		
+			free(fragsz);
+
+		//printf("%f\n", prob); 
+
+
+    }		//fin del for de z---------------------------
+	
+	escribirns(sns,ns, n);
 
 
 /*	print_red(red,n);
 	printf("\n"); 
 	printf("%d\n", percola(red,n,frag)); 
 
-	printf("%f\n", prob); */
+	printf("%f\n", prob);
 
 	printf("\n"); 
 	printf("%f\n", pmean/Z);
-	printf("\n");
+	printf("\n"); 						*/
 
 
-
+	free(ns);
   free(red);
 
   return 0;
@@ -102,35 +136,58 @@ void llenar (int*red,int n, float p){
 
 }
 //--------------------------------------------------------------------------------------------------------
-void escribir(char* s, float p, int m , int z, int n){
-
+void escribir(char* cha, float p, int m , int n){
 	FILE*fp;
-	fp=fopen(s,"a");
+	fp=fopen(cha,"a");
+
 		fprintf(fp,"%d",n);
 		fprintf(fp,"%s",";");
 		fprintf(fp,"%f",p);
 		fprintf(fp,"%s",";");
 		fprintf(fp,"%d\n",m);
 
-	
 fclose(fp);
 
 }
 
 //--------------------------------------------------------------------------------------------------------
-/*void escribirns(int* ns, int n){
+void escribirns(char* sns,int* ns, int n){
 	int i;
 	FILE*fp;
-	fp=fopen("ns(n).txt","w");
+	fp=fopen(sns,"a");
 	
-	fprintf(fp,"%c","largo de red");
-	fprintf(fp,"%f\n",n);
+	fprintf(fp,"%s","promedio todos los <p> ; ");
+	fprintf(fp,"%s","largo de red ");
+	fprintf(fp,"%d\n",n);
 	for(i=0;i<n*n;i++){
-		fprintf(fp,"%f\n",*(ns+i));
+		fprintf(fp,"%d\n",*(ns+i));
 	}
 fclose(fp);
 
-}*/
+}
+
+//--------------------------------------------------------------------------------------------------------
+void clusterSize(int *red, int n, int frag, int *fragsz, int *ns){
+
+	int i;
+	int mayor;  // voy a guardar el tamaño del fragmento mas grande
+
+	for(i=0 ; i<n*n; i++) fragsz[red[i]] = fragsz[red[i]] + 1;
+	fragsz[0] = 0;  //lo pongo a 0 a mano, ya que conte cuantos 0 hay en la red
+
+	mayor = ns[0];
+	for(i=1 ; i<frag; i++){ 
+
+		ns[fragsz[i]] = ns[fragsz[i]] + 1; // arranca en i=1, pues fragsz[0] contiene la cantidad de '0's que encontro en la red
+		
+		if(fragsz[i]>mayor) mayor = fragsz[i]; //si el fragmento i-esimo es mas grande, lo guardo en mayor
+
+	}	
+
+	//ns[0] = mayor;  //en ns[0] ubico el tamaño del fragmento mas grande
+
+}  
+
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
 void print_red(int* red, int n)
