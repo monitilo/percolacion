@@ -29,8 +29,8 @@ int main(int argc,char *argv[])
 	int frag; 		//guardo la etiqueta mas grande que pone hoshen
 	float pmean=0;
 	//float *pc;
-	char* lpm="L;P;M 3";
-	char* sns="ns(n) 3";
+	char* lpm="L;P;M ";
+	char* sns="ns(n)";
 	int m;
 	int *fragsz;	//variable donde voy a guardar el tamaño de cada fragmento
 	int* ns;		//variable donde guardo la distribucion de fragmentos, salvo en ns[0] que encuentro el tamaño del fragmento mas grande
@@ -258,36 +258,43 @@ void  corregir_etiqueta(int *red,int *clase,int n){	 //reetiqueta la red con los
 
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
-int percola(int *red,int n, int frag){ //saco los if que tardan mucho
-
-	int* fila1;
-	int* filan;
+int	percola(int *red,int n, int frag){
+	
+	int *fila1;
+	int *filan;
 	fila1=malloc(frag*sizeof(int));
 	filan=malloc(frag*sizeof(int));
 	int i;
-	int a;
+	int res=0;
 
 	for(i=0;i<frag;i++){
+
 		fila1[i]=0;
 		filan[i]=0;
-	}	
-	for(i=0;i<n;i++){
-		fila1[red[i]]=1;
-		filan[red[i+n*(n-1)]]=1;
-	}	
 
-	fila1[0]=0;
-	filan[0]=0;
-	a=0;
-
-	for(i=0;i<frag;i++){
-		a=fila1[i]*filan[i]+a;
 	}
-	free(fila1);
-	free(filan);
-return a;
+	
+	for(i=0;i<n;i++){
+	
+		fila1[red[i]]=1;
+		filan[red[(n-1)*n+i]]=1;
 
+	}
+	
+	i=2; //que arranque desde 2, pues solo me interesa ver a partir de la etiqueta 2
+	while(i<frag && res==0){
+
+		res = (fila1[i] && filan[i]) || res;
+		i++;
+
+	}	
+
+	free(filan);
+	free(fila1);
+	
+	return( (i-1) * res ); //devuelve el valor de la etiqueta del cluster percolate solo si res es 1, sino devuelve 0
 }
+
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 int hoshen(int *red,int n)
 {
