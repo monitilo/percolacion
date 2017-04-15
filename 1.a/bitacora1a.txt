@@ -1,0 +1,3 @@
+corri percolacion1a z=27000 con 6 L's distintas y crea un archivo con 27k valores para cada L, guardando siempre el <p> obtenido, y la Masa del cluster percolante (M).
+
+
