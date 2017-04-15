@@ -1,3 +1,12 @@
-corri percolacion1a z=27000 con 6 L's distintas y crea un archivo con 27k valores para cada L, guardando siempre el <p> obtenido, y la Masa del cluster percolante (M).
+corri percolacion1a z=27000 con 6 L's distintas y crea un archivo con 27k valores para cada L, guardando siempre el <p> obtenido, y la Masa del cluster percolante (M).y P=16
+
+ahora lo corro con otro P en otra carpeta P=64
+no se ven mejoras a ojo en el pc obtenido...
+
+y decubro otro poblema, el <<p>> es mayor a 1 !!!
+tenia mal inizializada la variable. por suerte es un dato que se puede calcular a posteriori ya que guarde todos los p's
+
+lo corro en otra carpeta P=4
+
 
 

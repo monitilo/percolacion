@@ -27,7 +27,7 @@ int main(int argc,char *argv[])
   int    n,z,i,j,t,*red;
   float  prob,denominador;
 	int frag; 		//guardo la etiqueta mas grande que pone hoshen
-	float pmean=0;
+	float pmean;
 	//float *pc;
 	char* lpm="L;P;M ";
 	char* sns="ns(n)";
@@ -58,6 +58,8 @@ int main(int argc,char *argv[])
 
 		srand(time(NULL));
 
+		pmean=0;
+		
 		for(i=0;i<z;i++)
 			{
 				prob=0.5;
