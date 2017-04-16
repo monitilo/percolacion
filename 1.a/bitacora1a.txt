@@ -9,4 +9,9 @@ tenia mal inizializada la variable. por suerte es un dato que se puede calcular 
 lo corro en otra carpeta P=4
 
 
+Me doy cuenta que usar z=27000 iteraciones era para el caso de hallar la media. para buscar asi el valor medio de p necesito del orden del millon de iteraciones. eso es prohibitivo.
 
+ah ojo veo que con 27mil tarda unos 5 minutos (325 seg). entonces lo pongo a correr con z = 1000000
+
+termino en 3 hs. podria hacer otra. primero analizo estos datos.
+Se me lleno el disco, tengo que hacer espacio antes que nada.
