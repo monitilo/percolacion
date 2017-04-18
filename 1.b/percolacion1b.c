@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define Z 27000
+#define Z 1
 
 void print_grid(int* red, int n);
 int hoshen(int *red,int n, float p); //devuelve el numero de "fragmentos"
@@ -39,7 +39,7 @@ int main(int argc,char *argv[]){
 
 	red = malloc(n*n*sizeof(int));
 
-	sprintf(name,"F(p), L = %d, Z = %d.txt",n,Z);
+	sprintf(name,"F_p,L=%d,Z=%d.txt",n,Z);
 	fs = fopen(name,"a");
 	if(!ftell(fs)){
 		fprintf(fs,"/* L = %d, Z = %d */\n",n,Z);
@@ -74,18 +74,18 @@ int main(int argc,char *argv[]){
 	
 	//grabo el dato de la corrida para F(p)
 
-	sprintf(name,"F(p), L = %d, Z = %d.txt",n,Z);
+	sprintf(name,"F_p,L=%d,Z=%d.txt",n,Z);
 	fs = fopen(name,"a");
 	fprintf(fs,"%f;%d;%d\n",p,f,mprom);
 	fclose(fs);
 
 	//grabo la distribucion de fragmentos sin normalizar
 	
-	sprintf(name,"ns(p = %f), L = %d.txt",p,n);
+	sprintf(name,"ns_p=%f,L=%d.txt",p,n);
 	fs = fopen(name,"a");
 	fprintf(fs,"/* L = %d, p = %f, Z = %d */\n",n,p,Z);
 	fprintf(fs,"/* Tamanio de cluster; Ocurrencias de cada tamaño de cluster */\n");
-	for(r=1;r<=ns[0];r++) fprintf(fs,"%d,%d\n",r,ns[r]);
+	for(r=0;r<n*n;r++) fprintf(fs,"%d,%d\n",r+1,ns[r]);
 	fclose(fs);
 
 	free(red);
@@ -279,20 +279,15 @@ int	percola(int *red,int n, int frag){
 void clusterSize(int *red, int n, int frag, int *fragsz, int *ns){
 
 	int i;
-	int mayor;  // voy a guardar el tamaño del fragmento mas grande
-
 	for(i=0 ; i<n*n; i++) fragsz[red[i]] = fragsz[red[i]] + 1;
 	fragsz[0] = 0;  //lo pongo a 0 a mano, ya que conte cuantos 0 hay en la red
 
-	mayor = ns[0];
-	for(i=1 ; i<frag; i++){ 
+	for(i=2 ; i<frag; i++){ 
 
-		ns[fragsz[i]] = ns[fragsz[i]] + 1; // arranca en i=1, pues fragsz[0] contiene la cantidad de '0's que encontro en la red
-		if(fragsz[i]>mayor) mayor = fragsz[i]; //si el fragmento i-esimo es mas grande, lo guardo en mayor
+		ns[fragsz[i]-1] = ns[fragsz[i]-1] + 1; // arranca en i=1, pues fragsz[0] contiene la cantidad de '0's que encontro en la red
 
 	}
 
-	ns[0] = mayor;  //en ns[0] ubico el tamaño del fragmento mas grande
 
 }
 
