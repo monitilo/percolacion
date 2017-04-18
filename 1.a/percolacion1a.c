@@ -4,7 +4,7 @@
 #include <time.h>
 
 #define P			16					// 1/2^P, P=16
-#define Z			27000		// iteraciones
+#define Z			27000 			// iteraciones
 #define N			2					// lado de la red simulada
 
 
@@ -29,14 +29,14 @@ int main(int argc,char *argv[])
 	int frag; 		//guardo la etiqueta mas grande que pone hoshen
 	float pmean;
 	//float *pc;
-	char* lpm="L;P;M ";
+	char* lpm="L;P;M";
 	char* sns="ns(n)";
 	int m;
 	int *fragsz;	//variable donde voy a guardar el tamaño de cada fragmento
 	int* ns;		//variable donde guardo la distribucion de fragmentos, salvo en ns[0] que encuentro el tamaño del fragmento mas grande
 		n=N;
 		z=Z;
-	for (t=0;t<6;t++){
+	for (t=0;t<1;t++){
 		n=n+n;
 
 		//pc=malloc(sizeof(float)*z);
@@ -103,7 +103,7 @@ int main(int argc,char *argv[])
 		escribirns(sns,ns, n, pmean/z);
 
 
-	/*	print_red(red,n);
+/*		print_red(red,n);
 		printf("\n"); 
 		printf("%d\n", percola(red,n,frag)); 
 
@@ -124,19 +124,8 @@ int main(int argc,char *argv[])
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 void llenar (int*red,int n, float p){
 	int i;
-	int r;
-
 	for (i=0;i<n*n;i++){
-
-	    r=rand() % 100;	
-
-		if (r>p*100){ 
-
-			red[i]=0;
-		}
-		else {
-			red[i]=1;
-		}
+  red[i] = ((float)rand() / (float)RAND_MAX) < p;
 	}
 
 }
@@ -161,7 +150,7 @@ void escribirns(char* sns,int* ns, int n,float pmean){
 	char name[100];
 	FILE*fp;
 
-	sprintf(name,"ns(%d), <<p>> = %f.txt",n,pmean);
+	sprintf(name,"ns_%d,pmean_%f.txt",n,pmean);
 	fp=fopen(name,"a");
 
 	for(i=0;i<n*n;i++){
@@ -175,24 +164,17 @@ fclose(fp);
 void clusterSize(int *red, int n, int frag, int *fragsz, int *ns){
 
 	int i;
-	int mayor;  // voy a guardar el tamaño del fragmento mas grande
-
 	for(i=0 ; i<n*n; i++) fragsz[red[i]] = fragsz[red[i]] + 1;
 	fragsz[0] = 0;  //lo pongo a 0 a mano, ya que conte cuantos 0 hay en la red
 
-	mayor = ns[0];
-	for(i=1 ; i<frag; i++){ 
+	for(i=2 ; i<frag; i++){ 
+		if (fragsz[i]!=0)
+			ns[fragsz[i]-1] = ns[fragsz[i]-1] + 1; // arranca en i=1, pues fragsz[0] contiene la cantidad de '0's que encontro en la red
 
-		ns[fragsz[i]] = ns[fragsz[i]] + 1; // arranca en i=1, pues fragsz[0] contiene la cantidad de '0's que encontro en la red
-		
-		if(fragsz[i]>mayor) mayor = fragsz[i]; //si el fragmento i-esimo es mas grande, lo guardo en mayor
+	}
 
-	}	
 
-	//ns[0] = mayor;  //en ns[0] ubico el tamaño del fragmento mas grande
-
-}  
-
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------//
 
 void print_red(int* red, int n)
