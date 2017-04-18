@@ -283,8 +283,8 @@ void clusterSize(int *red, int n, int frag, int *fragsz, int *ns){
 	fragsz[0] = 0;  //lo pongo a 0 a mano, ya que conte cuantos 0 hay en la red
 
 	for(i=2 ; i<frag; i++){ 
-
-		ns[fragsz[i]-1] = ns[fragsz[i]-1] + 1; // arranca en i=1, pues fragsz[0] contiene la cantidad de '0's que encontro en la red
+		
+		if(fragsz[i]!=0) ns[fragsz[i]-1] = ns[fragsz[i]-1] + 1; // arranca en i=1, pues fragsz[0] contiene la cantidad de '0's que encontro en la red
 
 	}
 
