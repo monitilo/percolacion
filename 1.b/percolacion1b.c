@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define Z 1
+#define Z 27000
 
 void print_grid(int* red, int n);
 int hoshen(int *red,int n, float p); //devuelve el numero de "fragmentos"
@@ -85,7 +85,7 @@ int main(int argc,char *argv[]){
 	fs = fopen(name,"a");
 	fprintf(fs,"/* L = %d, p = %f, Z = %d */\n",n,p,Z);
 	fprintf(fs,"/* Tamanio de cluster; Ocurrencias de cada tamaño de cluster */\n");
-	for(r=0;r<n*n;r++) fprintf(fs,"%d,%d\n",r+1,ns[r]);
+	for(r=0;r<n*n;r++) fprintf(fs,"%d;%d\n",r+1,ns[r]);
 	fclose(fs);
 
 	free(red);

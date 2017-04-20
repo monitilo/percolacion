@@ -13,9 +13,9 @@ do
 		echo $(./test.e $n $p)
 	done
 	
-	for r in {1..100}
+	for r in {1..2000}
 	do
-		p=$(bc -l <<< "$r*0.002 + 0.5" )
+		p=$(bc -l <<< "$r*0.0001 + 0.5" )
 		echo $(./test.e $n $p)
 	done
 
