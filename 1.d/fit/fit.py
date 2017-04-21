@@ -1,35 +1,47 @@
 import matplotlib.pyplot as plt
 import sys
 import numpy as np
+import scipy.stats as sp
 import os
 
-def ajuste(x,y,cut):
+def ajuste(x,y,inf,up):
 
 	xfit=np.array([])
-	yfit=np.array([])
+	yfit=xfit
 	i=0
 
-	while(x[i]<=cut):
+	while(x[i] <= inf):
+		i=i+1
 
+	while(x[i] <= up):
 		xfit=np.append(xfit,x[i])
 		yfit=np.append(yfit,y[i])
-		i=i+1 
+		i=i+1
 
-	plt.plot(xfit,yfit,'ro')
-	p=np.polyfit(xfit,yfit,1)
-	plt.plot(xfit,xfit*p[0]+p[1])
-	plt.show(block=True)
+	p=sp.linregress(xfit,yfit)
+	#plt.plot(xfit,yfit,'ro',xfit,xfit*p[0]+p[1])
+	plt.xlabel("ln(s)")
+	plt.ylabel("ln(ns)")
+	#plt.show()
 	return p
 
 cwd=os.getcwd()
 ls=os.listdir(cwd)
+r=[]
+tau=[]
+p=[]
 
 for files in ls:
 	if files.endswith(".txt"):
 
 		f = open(files,"r") 
 
-		f.readline()
+		aux=f.readline()
+		aux=aux.split(",")
+		aux=aux[1]
+		aux=aux.split(" ")
+		p.append(float(aux[3]))
+		
 		f.readline()
 		ns=np.array([])
 		x=np.array([])
@@ -49,11 +61,26 @@ for files in ls:
 				y=np.append(y,np.log(ns[i]/norm))
 				x=np.append(x,np.log(i+1))
 
-		plt.plot(x,y,'go')
+		#plt.figure()
+		#plt.plot(x,y,'go')
+		
 
-		p=ajuste(x,y,5.6)
+		inf=3
+		up=6
+		aj=ajuste(x,y,inf,up)
+		tau.append(-aj[0])
+		r.append(aj[2]**2)
 
-		print p
+maxr=np.amax(r)
+
+i=0
+
+while r[i]!=maxr:
+	i=i+1
+
+print "P = " + str(p[i]) + ", Tau = " + str(tau[i]) + " R^2 = " + str(r[i])
+
+
 
 
 
