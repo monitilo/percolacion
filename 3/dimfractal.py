@@ -13,7 +13,7 @@ m=np.array([])
 
 start=99638
 
-index=np.arange(12,129,2)
+index=np.arange(12,127,2)
 
 
 for files in ls:
@@ -72,7 +72,7 @@ for files in ls:
 			f.close()
 				
 
-np.savetxt('lpm.out', np.transpose([l,p,m]), fmt='%1.6f', header='L;<P>;<M>')				
+np.savetxt('lpm.out1', [l,p,m], fmt='%1.6f', header='1:L;2:<P>;3:<M>')				
 			
 			
 			
