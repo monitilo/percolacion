@@ -1,0 +1,3 @@
+/* L 256 Z 100000 */
+/* probabilidad; segundo momento */
+0.010000;68239193

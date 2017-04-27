@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define Z 27000
+#define Z 100000
 
 void print_grid(int* red, int n);
 int hoshen(int *red,int n, float p); //devuelve el numero de "fragmentos"
