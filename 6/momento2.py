@@ -32,7 +32,7 @@ for files in ls:
 			aux=line.split(";")
 			ns=np.append(ns,float(aux[1]))
 		
-		ns=ns/np.sum(ns)
+		ns=ns/100000
 		m2=np.append(m2,np.sum(ns*s))
 		print p[len(p)-1]
 

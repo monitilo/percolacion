@@ -60,21 +60,15 @@ int main(int argc,char *argv[]){
 
 	}
 	
-	for(k=0;k<n*n;k++) m2 = ns[k] * (k+1) * (k+1) + m2;
-	
-
-	//grabo el dato de m2(p)
-	
-	sprintf(name,"m2(p),L%d.txt",n);
+	//grabo la distribucion de fragmentos SIN normalizar y SIN percolantes	
+		
+	sprintf(name,"ns_p=%f,L=%d.txt",p,n);
 	fs = fopen(name,"a");
-	if(!ftell(fs)){
-		fprintf(fs,"/* L %d Z %d */\n",n,Z);
-		fprintf(fs,"/* probabilidad; segundo momento */\n");
-	}
-
-	fprintf(fs,"%f;%d\n",p,m2);
-
+	fprintf(fs,"L %d,p %f,Z %d\n",n,p,Z);
+	fprintf(fs,"/* Tamanio de cluster; Ocurrencias de cada tamaño de cluster */\n");
+	for(r=0;r<n*n;r++) fprintf(fs,"%d;%d\n",r+1,ns[r]);
 	fclose(fs);
+
 	free(red);
 	free(ns);
 	
