@@ -55,19 +55,20 @@ for files in ls:
 			else:
 				pinf=np.append(pinf,0)
 		
-		th=0.0001
+		"""th=0.00001
 		j=0
 		while pinf[j] <= th:
 			j = j + 1
 		pc=p[j]
-		print pc
+		print pc"""
 
-		"""
+		
 		j=0
-		pc=0.54
+		pc=0.5927
+
 		while p[j] <= pc:
 			j = j + 1
-		"""
+		
 
 		for i in range(j,len(pinf)):
 
@@ -83,8 +84,8 @@ for files in ls:
 		plt.plot(x,y,'ro')
 		plt.show()
 		plt.figure(3)
-		inf=-9
-		up=-6
+		inf=-10
+		up=-7
 		aj=ajuste(x,y,inf,up)
 		print aj
 
