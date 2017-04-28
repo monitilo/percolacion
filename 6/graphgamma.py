@@ -11,18 +11,19 @@ m2=np.array([])
 
 for files in ls:
 
-	if files.endswith(".txt"):
+	if files.endswith(".out"):
 		
 		f=open(files,"r")
 		
-		f.readline()
+		"""f.readline()
 		f.readline()
 		
 		for line in f:
 			
 			aux=line.split(";")
 			p=np.append(p,float(aux[0]))
-			m2=np.append(m2,float(aux[1]))
+			m2=np.append(m2,float(aux[1]))"""
+		p,m2=np.loadtxt(files)
 			
 
 		plt.plot(p,m2,'ro')
