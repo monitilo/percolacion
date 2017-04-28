@@ -2,7 +2,7 @@
 
 
 start=$(date +%s)
-for n in {4,8,16,32,64,128}
+for n in {6,8,128}
 do
 	
 	mkdir "L$n/"

@@ -25,7 +25,6 @@ int main(int argc,char *argv[]){
 	int *percolantes;
 	int k,r;
 	char name[100]; //voy a guardar el nombre del archivo a exportar
-	int m2 = 0;
 	FILE *fs;
 
 	if(argc==3){
