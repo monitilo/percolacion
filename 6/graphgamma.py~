@@ -45,7 +45,9 @@ for files in ls:
 
 		imenor=imax-600
 		imayor=imax+600
+
 	
+
 		cmas=np.log(np.diff(m2[(imax+1):(imayor+1)])/np.diff(p[(imax+1):(imayor+1)]))
 		cmenos=np.log(np.diff(m2[imenor:imax])/np.diff(p[imenor:imax]))
 		cmenos=np.flipud(cmenos)
