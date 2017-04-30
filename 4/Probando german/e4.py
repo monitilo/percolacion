@@ -9,12 +9,11 @@ ls=os.listdir(cwd)
 p=np.array([])
 ns=np.array([])
 s=np.array([])
-s=np.array(range(1,128**2+1))
-pc=0.5874499606179948
-tau=1.9
+s=np.array(range(1,8**2+1))
+pc=0.571409280925019
 sigma=36.0/91.0
 
-f = open("ns_p=0.587500,L=128.txt","r") 
+f = open("ns_p=0.571400,L=8.txt","r") 
 
 nspc=np.array([])
 
@@ -31,6 +30,7 @@ for line in f:
 	nspc=np.append(nspc,float(aux[1]))
 	
 nspc=nspc/100000
+
 
 for files in ls:
 	
@@ -59,12 +59,14 @@ for files in ls:
 			nspc=ns"""
 
 
-
-		"""auxo=np.nonzero(ns)
+		auxo=0
+		auxe=0
+		s0=0
+		auxo=np.nonzero(ns)
 		auxe=np.where(ns==(len(auxo)-1))
-		s0=np.max(auxe[-1])"""
+		s0=np.max(auxe[-1])
 		
-		s0=len(s)
+		#s0=len(s)
 
 		lista=np.array([])
 
@@ -82,24 +84,26 @@ for files in ls:
 		print p[len(p)-1] 
 		
 		#lista=s
-		
-		ini=lista[0]
-		fi=lista[-1]
+
+		ini=lista[-1]
+		fi=lista[-1]+1
 
 		fz=ns[ini:fi]/nspc[ini:fi]
 		lnfz=np.log(ns[ini:fi]) - np.log(nspc[ini:fi])
 
-		z=(lista[0:-1]**sigma)*(p[-1]-pc)/pc
+		z=(lista[-2:-1]**sigma)*(p[len(p)-1] -pc)/pc
 		#z=lista[0:-1]
 		lnz=np.log(z)*sigma+np.log(p[-1]-pc)-np.log(pc)
 
-		plt.plot(z,fz,'o')
+		plt.plot(z,fz,'.-')
 
+"""
+x=(s**sigma)*(pc-0.571400)/pc
+plt.plot(x,nspc,'.-')
+#plt.plot(np.log(x),np.log(nspc),'.-') """
 
-
-
-plt.xlabel("ln (z)")
-plt.ylabel("ln(F(z))")
+plt.xlabel("z")
+plt.ylabel("F(z)")
 plt.show()			
 		
 """
