@@ -7,11 +7,15 @@ cwd=os.getcwd()
 ls=os.listdir(cwd)
 
 p=np.array([])
-ns=np.array([])
+#ns=np.array([])
 s=np.array([])
 s=np.array(range(1,8**2+1))
 pc=0.571409280925019
 sigma=36.0/91.0
+
+j=0
+ns=np.empty((2079,len(s)))
+#p=np.empty((2079,2079))
 
 f = open("ns_p=0.571400,L=8.txt","r") 
 
@@ -29,7 +33,8 @@ for line in f:
 	aux=line.split(";")
 	nspc=np.append(nspc,float(aux[1]))
 	
-nspc=nspc/100000
+#nspc=nspc/100000
+
 
 
 for files in ls:
@@ -38,22 +43,25 @@ for files in ls:
 
 		f = open(files,"r") 
 		
-		ns=np.array([])
+		
+		#ns=np.array([])
 		aux=f.readline()
 		aux=aux.split(",")
 		aux=aux[1]
 		aux=aux.split(" ")
 		p=np.append(p,float(aux[len(aux)-1]))
+
+
 		f.readline()
 		
-
-
+		h=0
 		for line in f:
 
 			aux=line.split(";")
-			ns=np.append(ns,float(aux[1]))
-		
-		ns=ns/100000
+			ns[j][h]=float(aux[1])	
+			h=h+1
+
+		#ns[j][:]=ns[j][:]/100000
 
 		"""if p[-1]==0.587500:
 			nspc=ns"""
@@ -62,8 +70,8 @@ for files in ls:
 		auxo=0
 		auxe=0
 		s0=0
-		auxo=np.nonzero(ns)
-		auxe=np.where(ns==(len(auxo)-1))
+		auxo=np.nonzero(ns[j][:])
+		auxe=np.where(ns[j][:]==(len(auxo)-1))
 		s0=np.max(auxe[-1])
 		
 		#s0=len(s)
@@ -84,36 +92,74 @@ for files in ls:
 		print p[len(p)-1] 
 		
 		#lista=s
-
+		
 		ini=lista[0]
 		fi=lista[0]+1
 
-		fz=ns[ini:fi]/nspc[ini:fi]
-		lnfz=np.log(ns[ini:fi]) - np.log(nspc[ini:fi])
+		fz=ns[j][ini:fi]/nspc[ini:fi]
+		#lnfz=np.log(ns[ini:fi]) - np.log(nspc[ini:fi])
 
 		z=(lista[0:1]**sigma)*(p[len(p)-1] -pc)/pc
 		#z=lista[0:-1]
-		lnz=np.log(z)*sigma+np.log(p[-1]-pc)-np.log(pc)
+		#lnz=np.log(z)*sigma+np.log(p[-1]-pc)-np.log(pc)
 
-		plt.plot(z,fz,'.-r')
+		plt.plot(z,fz,'*r') 
 
 		ini=lista[-1]
 		fi=lista[-1]+1
-		fz=ns[ini:fi]/nspc[ini:fi]
+		fz=ns[j][ini:fi]/nspc[ini:fi]
 		z=(lista[-2:-1]**sigma)*(p[len(p)-1] -pc)/pc
-		plt.plot(z,fz,'.-k')
+		plt.plot(z,fz,'*k')
+		
+		j=j+1
+
+
+
+ini=lista[0]+1
+fi=lista[-1]
+print ini
+print fi
+
+f1=np.zeros((lista[-1]+1,2079))
+z=np.empty((lista[-1]+1,2079))
+
+for j in range (2079):
+
+	#fz=ns[j][ini:fi]/nspc[ini:fi]
+	#z=(lista[0:1]**sigma)*(p[j] -pc)/pc
+
+	#z[j]=(lista[-2:-1]**sigma)*(p[j] -pc)/pc
+
+	for o in range(int(lista[0]),int(lista[-1])+1):
+		f1[o][j]=ns[j][o]/nspc[o]
+		z[o][j]=(o**sigma)*(p[j] -pc)/pc
+
+for o in range(int(lista[0]),int(lista[-1])+1):
+	plt.plot(z[o][:],f1[o][:],'o')
+
+	print np.max(f1[o][:])
+	auxi=np.where(f1[o][:]==np.max(f1[o][:]))	
+	print z[o][auxi[-1]]
+	plt.axvline(z[o][auxi[-1]], ymin=0, ymax = 3.5, linewidth=0.2, color='k')
+	plt.axhline(np.max(f1[o][:]), -2.5,2.5, linewidth=0.2, color='k')
+	plt.annotate(z[o][auxi[-1]], xy=(z[o][auxi[-1]], np.max(f1[o][:])), xytext=(z[o][auxi[-1]]+0.9,2.5-o*0.18), arrowprops=dict(facecolor='black', shrink=0.02),)
+
+plt.xlabel("z")
+plt.ylabel("F(z)")
+plt.show()		
+
+
 
 """
 x=(s**sigma)*(pc-0.571400)/pc
 plt.plot(x,nspc,'.-')
-#plt.plot(np.log(x),np.log(nspc),'.-') """
-
-plt.xlabel("z")
-plt.ylabel("F(z)")
-plt.show()			
-		
+#plt.plot(np.log(x),np.log(nspc),'.-') 
 """
-lnfz=np.log(ns)-np.log(nspc)
+
+	
+"""
+
+#lnfz=np.log(ns)-np.log(nspc)
 
 #eps=(p-pc)/pc
 
