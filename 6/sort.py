@@ -22,9 +22,9 @@ def sort(x,y):
 				swap(y,i,j)
 
 
-p,m2=np.loadtxt("m2,L128.out")
+p,m2=np.loadtxt("m2,L6.out")
 
 sort(p,m2)
 
-np.savetxt("m2.out", [p,m2], fmt="%1.6f", header = "p m2")
+np.savetxt("m2,L6.txt", [p,m2], fmt="%1.6f", header = "p m2")
 
