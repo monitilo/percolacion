@@ -20,12 +20,13 @@ for files in ls:
 		
 		ajus=sp.linregress(x,y)
 		plt.plot(x,y,'ro')
-		plt.plot(x,x*ajus[0]+ajus[1],label='$D = {i} \pm {j}$'.format(i=ajus[0],j=ajus[4]))
+		#plt.plot(x,x*ajus[0]+ajus[1],label='$D = {i} \pm {j}$'.format(i=ajus[0],j=ajus[4]))
+		plt.plot(x,x*ajus[0]+ajus[1],label='$D = {i}$'.format(i=ajus[0]))		
 		plt.xlabel("ln(L)")
 		plt.ylabel("ln(M)")
 		plt.title("ln(M) vs ln(L)\n(Obtencion de la dimension fractal D)")
 		plt.legend(loc='best')
-		plt.savefig("dimfractal.png")
+		plt.savefig("dimfractal" + str(l[-1]) + ".png")
 		plt.show()
 		
 		
