@@ -34,13 +34,14 @@ for files in ls:
 			i=i+1
 		pc=p[i]
 		print "L = " + str(l) + " pc = " + str(pc)
-		plt.plot(p,F, label='$L = {i}; pc = {h}$'.format(i=l,h=pc))
+		plt.plot(p,F, label='$p_c(L = {i}) = {h}$'.format(i=l,h=pc))
 
 plt.legend(loc='best')
 plt.plot([0,1],[0.5,0.5])
 plt.xlabel("p")
 plt.ylabel("F(p)")
-plt.title("Distribucion de probabilidad F(p)")
+plt.title("Probabilidad acumulativa F(p)")
+plt.savefig("F(p).png")
 plt.show()
 
 
