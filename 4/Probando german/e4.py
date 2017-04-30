@@ -9,11 +9,11 @@ ls=os.listdir(cwd)
 p=np.array([])
 ns=np.array([])
 s=np.array([])
-s=np.array(range(1,8**2+1))
-pc=0.571409280925019
+s=np.array(range(1,128**2+1))
+pc=0.5874499606179948
 sigma=36.0/91.0
 
-f = open("ns_p=0.571400,L=8.txt","r") 
+f = open("ns_p=0.587500,L=128.txt","r") 
 
 nspc=np.array([])
 
@@ -97,10 +97,7 @@ for files in ls:
 
 		plt.plot(z,fz,'.-')
 
-"""
-x=(s**sigma)*(pc-0.571400)/pc
-plt.plot(x,nspc,'.-')
-#plt.plot(np.log(x),np.log(nspc),'.-') """
+
 
 plt.xlabel("z")
 plt.ylabel("F(z)")
