@@ -30,14 +30,15 @@ for files in ls:
 				pinf=np.append(pinf,0)
 
 
-		plt.plot(p,pinf,'o', label='$L = {i}$'.format(i=l))
+		plt.plot(p,pinf, label='$L = {i}$'.format(i=l))
 		"""plt.title("L = " + str(l))
 		plt.show()"""
 
 plt.legend(loc='best')
 plt.xlabel("p")
-plt.ylabel(r"\P_inf")
-plt.title("Fuerza de cluster percolante P_inf")
+plt.ylabel("$P_\infty$")
+plt.title("Fuerza de cluster percolante $P_\infty$")
+plt.savefig("pinf.png")
 plt.show()
 
 
