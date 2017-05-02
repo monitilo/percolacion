@@ -30,8 +30,10 @@ A partir de los datos obtenidos en 1.c se calcula la dimension fractal D mediant
 dimfractal.py y dimfractal2.py son scripts auxiliares para poder transformar los datos de 1.c en cosas mas amigables.
 
 -)4:
+Utilizando los datos de ns sin percolantes guardados en 6, e4.py realiza los calculos pertinentes para graficar F(z) vs z. y guarda un archivo.out con los valores donde F(z) alcanza el maximo para cada s y p
 
 -)5:
+Cargando el archivo.out guardado en el punto 4, se procede a graficarlos y ajustarlos en e5.py
 
 -)6:
 
